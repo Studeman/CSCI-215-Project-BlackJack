@@ -1,0 +1,47 @@
+package blackjack;
+
+import java.util.*;
+public class Deck {
+    String print = "";
+    Card card;
+    ArrayList<Card> deck = new ArrayList<>(0);
+	public  Deck(){
+            for(int i=2;i<=11;i++){
+                deck.add(new Card(i," of Hearts"));
+            }
+            for(int i=2;i<=11;i++){
+                deck.add(new Card(i," of Spades"));
+            }
+            for(int i=2;i<=11;i++){
+                deck.add(new Card(i," of Clubs"));
+            }
+            for(int i=2;i<=11;i++){
+                deck.add(new Card(i," of Diamonds"));
+            }
+            deck.add(new Card(10,"King of Diamonds"));
+            deck.add(new Card(10,"King of Hearts"));
+            deck.add(new Card(10,"King of Spades"));
+            deck.add(new Card(10,"King of Clubs"));
+            deck.add(new Card(10,"Queen of Diamonds"));
+            deck.add(new Card(10,"Queen of Hearts"));
+            deck.add(new Card(10,"Queen of Spades"));
+            deck.add(new Card(10,"Queen of Clubs"));
+            deck.add(new Card(10,"Jack of Diamonds"));
+            deck.add(new Card(10,"Jack of Hearts"));
+            deck.add(new Card(10,"Jack of Spades"));
+            deck.add(new Card(10,"Jack of Clubs"));
+            
+	}
+        
+	public Card getCard(){
+            card=deck.get(0);
+            deck.remove(0);
+            return card;
+                
+	}
+	
+	public ArrayList shuffleDeck(){
+		Collections.shuffle(deck);
+		return deck;
+	}
+}
