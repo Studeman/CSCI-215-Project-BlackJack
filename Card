@@ -1,0 +1,22 @@
+package blackjack;
+
+public class Card {
+    String string;
+    int number;
+    String suit;
+    public Card(int n,String s){
+        number = n;
+        suit = s;
+        if(string.startsWith(" ")){
+            string = number + suit;
+        } else {
+            string = suit;
+        }
+    }
+    public String getString(){
+        return string;
+    }
+    public int getValue(){
+        return number;
+    }
+}
