@@ -7,29 +7,33 @@ public class Deck {
     ArrayList<Card> deck = new ArrayList<>(0);
 	public  Deck(){
             for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Hearts"));
+                String f = i + "";
+                deck.add(new Card(i,f,"Hearts"));
             }
             for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Spades"));
+                String f = i + "";
+                deck.add(new Card(i,f,"Spades"));
             }
             for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Clubs"));
+                String f = i + "";
+                deck.add(new Card(i,f,"Clubs"));
             }
             for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Diamonds"));
+                String f = i + "";
+                deck.add(new Card(i,f,"Diamonds"));
             }
-            deck.add(new Card(10,"King of Diamonds"));
-            deck.add(new Card(10,"King of Hearts"));
-            deck.add(new Card(10,"King of Spades"));
-            deck.add(new Card(10,"King of Clubs"));
-            deck.add(new Card(10,"Queen of Diamonds"));
-            deck.add(new Card(10,"Queen of Hearts"));
-            deck.add(new Card(10,"Queen of Spades"));
-            deck.add(new Card(10,"Queen of Clubs"));
-            deck.add(new Card(10,"Jack of Diamonds"));
-            deck.add(new Card(10,"Jack of Hearts"));
-            deck.add(new Card(10,"Jack of Spades"));
-            deck.add(new Card(10,"Jack of Clubs"));
+            deck.add(new Card(10,"King","Clubs"));
+            deck.add(new Card(10,"King","Spades"));
+            deck.add(new Card(10,"King","Hearts"));
+            deck.add(new Card(10,"King","Diamonds"));
+            deck.add(new Card(10,"Queen","Diamonds"));
+            deck.add(new Card(10,"Queen","Hearts"));
+            deck.add(new Card(10,"Queen","Spades"));
+            deck.add(new Card(10,"Queen","Clubs"));
+            deck.add(new Card(10,"Jack","Diamonds"));
+            deck.add(new Card(10,"Jack","Hearts"));
+            deck.add(new Card(10,"Jack","Spades"));
+            deck.add(new Card(10,"Jack","Clubs"));
             
 	}
         
