@@ -1,0 +1,21 @@
+package blackjack;
+
+import java.util.LinkedList;
+
+public class Hand {
+    LinkedList cards = new LinkedList();
+    int value;
+    public void hit() {
+        cards.add(Deck.getCard());
+        value = value + cards.getLast().getValue();
+        if(value > 21) {
+            if(cards.isSoft()) {
+                value = value - 8;
+            } else {
+                //lose game
+            }
+        } else if(value == 21) {
+            //win game
+        }
+    }
+}
