@@ -1,22 +1,32 @@
 package blackjack;
 
 public class Card {
-    String string;
-    int number;
+    boolean soft;
+    String name;
+    int value;
     String suit;
-    public Card(int n,String s){
-        number = n;
+    String face;
+    public Card(int n,String f, String s){
+        value = n;
         suit = s;
-        if(string.startsWith(" ")){
-            string = number + suit;
+        face = f;
+        name = face + "of" + suit;
+        if(value == 11){
+            soft = true;
         } else {
-            string = suit;
+            soft = false;
         }
     }
-    public String getString(){
-        return string;
+    public String getName(){
+        return name;
+    }
+    public String getFace(){
+        return face;
+    }
+    public String getSuit(){
+        return suit;
     }
     public int getValue(){
-        return number;
+        return value;
     }
 }
