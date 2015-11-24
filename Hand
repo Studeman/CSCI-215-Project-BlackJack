@@ -1,0 +1,63 @@
+package blackjack;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class Hand {
+    ArrayList<Card> cards = new ArrayList();
+    int value;
+    Deck deck;
+    int soft = 0;
+    Card last;
+    Card down;
+    public Hand (Deck deck) {
+        this.deck = deck;
+    }
+    public boolean hit() {
+        Card newCard = deck.getCard();
+        if (newCard.getValue() == 11) {
+            soft++;
+        }
+        cards.add(newCard);
+        value = value + newCard.getValue();
+        last = newCard;
+        if(value > 21) {
+            if(soft > 0) {
+                value = value - 8;
+            } else {
+                return false;
+            }
+        } else if(value == 21) {
+            return true;
+        }
+        return true;
+    }
+    public void hitDown() {
+        Card newCard = deck.getCard();
+        newCard.faceDown();
+        if (newCard.getValue() == 11) {
+            soft++;
+        }
+        cards.add(newCard);
+        down = newCard;
+    }
+    public void reveal() {
+        down.faceUp();
+        value = value + down.getValue();
+    }
+    public int getValue() {
+        return value;
+    }
+    public Card getLast() {
+        return last;
+    }
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+    public void clear() {
+        for (int i = 0; i < cards.size(); i++) {
+            deck.addCard(cards.remove(i));
+        }
+        deck.addCard(cards.remove(0));
+    }
+}
