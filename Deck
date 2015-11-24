@@ -5,43 +5,54 @@ public class Deck {
     String print = "";
     Card card;
     ArrayList<Card> deck = new ArrayList<>(0);
-	public  Deck(){
-            for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Hearts"));
-            }
-            for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Spades"));
-            }
-            for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Clubs"));
-            }
-            for(int i=2;i<=11;i++){
-                deck.add(new Card(i," of Diamonds"));
-            }
-            deck.add(new Card(10,"King of Diamonds"));
-            deck.add(new Card(10,"King of Hearts"));
-            deck.add(new Card(10,"King of Spades"));
-            deck.add(new Card(10,"King of Clubs"));
-            deck.add(new Card(10,"Queen of Diamonds"));
-            deck.add(new Card(10,"Queen of Hearts"));
-            deck.add(new Card(10,"Queen of Spades"));
-            deck.add(new Card(10,"Queen of Clubs"));
-            deck.add(new Card(10,"Jack of Diamonds"));
-            deck.add(new Card(10,"Jack of Hearts"));
-            deck.add(new Card(10,"Jack of Spades"));
-            deck.add(new Card(10,"Jack of Clubs"));
-            
-	}
+    public  Deck(){
+        for(int i=2;i<=10;i++){
+            String f = i + "";
+            deck.add(new Card(i,f,"Hearts"));
+        }
+        for(int i=2;i<=10;i++){
+            String f = i + "";
+            deck.add(new Card(i,f,"Spades"));
+        }
+        for(int i=2;i<=10;i++){
+            String f = i + "";
+            deck.add(new Card(i,f,"Clubs"));
+        }
+        for(int i=2;i<=10;i++){
+            String f = i + "";
+            deck.add(new Card(i,f,"Diamonds"));
+        }
+        deck.add(new Card(10,"King","Clubs"));
+        deck.add(new Card(10,"King","Spades"));
+        deck.add(new Card(10,"King","Hearts"));
+        deck.add(new Card(10,"King","Diamonds"));
+        deck.add(new Card(10,"Queen","Diamonds"));
+        deck.add(new Card(10,"Queen","Hearts"));
+        deck.add(new Card(10,"Queen","Spades"));
+        deck.add(new Card(10,"Queen","Clubs"));
+        deck.add(new Card(10,"Jack","Diamonds"));
+        deck.add(new Card(10,"Jack","Hearts"));
+        deck.add(new Card(10,"Jack","Spades"));
+        deck.add(new Card(10,"Jack","Clubs"));
+        deck.add(new Card(11,"Ace","Diamonds"));
+        deck.add(new Card(11,"Ace","Hearts"));
+        deck.add(new Card(11,"Ace","Spades"));
+        deck.add(new Card(11,"Ace","Clubs"));
+    }
         
-	public Card getCard(){
-            card=deck.get(0);
-            deck.remove(0);
-            return card;
-                
-	}
-	
-	public ArrayList shuffleDeck(){
-		Collections.shuffle(deck);
-		return deck;
-	}
+    public Card getCard(){
+        card=deck.get(0);
+        deck.remove(0);
+        return card;
+
+    }
+
+    public ArrayList shuffleDeck(){
+            Collections.shuffle(deck);
+            return deck;
+    }
+    
+    public void addCard(Card card) {
+        deck.add(card);
+    }
 }
