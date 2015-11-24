@@ -1,0 +1,223 @@
+package blackjack;
+
+import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import javax.swing.*;
+/**
+ *
+ * @author James Tomasko
+ */
+public class BlackjackPanel extends JPanel {
+    Deck deck;
+    Hand player;
+    Hand dealer;
+    boolean begun = false;
+    int money = 500;
+    int bet = 0;
+    int pa = 160;
+    int pb = 503;
+    int da = 160;
+    int db = -150;
+    
+    public BlackjackPanel() {
+        deck = new Deck();
+        deck.shuffleDeck();
+        player = new Hand(deck);
+        dealer = new Hand(deck);
+        setPreferredSize(new Dimension(1500, 700));
+        addMouseListener(new jackMouseListener());
+    }
+    public void paint(Graphics g){
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, 1500, 700);
+        g.setColor(Color.RED);
+        Font f = new Font("Times", Font.PLAIN, 50);
+        g.setFont(f);
+        String h = "Hit";
+        String s = "Stand";
+        String b = "Begin";
+        String m = "Money";
+        String bt = "Bet";
+        g.drawString(h, 1125, 250);
+        g.drawString(s, 1125, 500);
+        g.drawString(b, 125, 375);
+        g.drawString(m + ":" + money, 500, 325);
+        g.drawString(bt + ":" + bet, 500, 400);
+        g.drawRect(1100, 200, 125, 75);
+        g.drawRect(1100, 450, 190, 75);
+        g.drawRect(100, 325, 190, 75);
+        ArrayList<Card> pHand = player.getCards();
+        for (int i = 0; i < pHand.size(); i++) {
+            BufferedImage img = null;
+            String c = pHand.get(i).getName();
+            File file = new File("C:\\Users\\James\\Documents\\NetBeansProjects\\Game\\Cards\\" + c + ".jpg");
+        try {
+            img = ImageIO.read( new FileImageInputStream(file));   // handle exception...
+        } catch (IOException ex) {
+            Logger.getLogger(BlackjackPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            g.drawImage(img, pa, pb, null);
+            pa = pa + 250;
+        }
+        pa = 160;
+        ArrayList<Card> dHand = dealer.getCards();
+        for (int i = 0; i < dHand.size(); i++) {
+            BufferedImage img = null;
+            String c = dHand.get(i).getName();
+            File file;
+            if (dHand.get(i).getUp()) {
+                file = new File("C:\\Users\\James\\Documents\\NetBeansProjects\\Game\\Cards\\" + c + ".jpg");
+            } else {
+                file = new File("C:\\Users\\James\\Documents\\NetBeansProjects\\Game\\Cards\\Back.jpg");
+            }
+        try {
+            img = ImageIO.read( new FileImageInputStream(file));   // handle exception...
+        } catch (IOException ex) {
+            Logger.getLogger(BlackjackPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            g.drawImage(img, da, db, null);
+            da = da + 250;
+        }
+        da = 160;
+    }
+    private class jackMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
+            if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+                if (x > 1100 && x < 1225 && y > 200 && y < 275) {
+                    boolean p = player.hit();
+                    repaint();
+                    if (!p) {
+                        JOptionPane.showMessageDialog(null, "Player Busts");
+                        bet = 0;
+                        repaint();
+                        int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            reset();
+                        }
+                    }
+                } else if (x > 1100 && x < 1290 && y > 450 && y < 525) {
+                    dealer.reveal();
+                    repaint();
+                    boolean done = false;
+                    while (dealer.getValue() <= 17) {
+                        boolean a = dealer.hit();
+                        if (!a) {
+                            JOptionPane.showMessageDialog(null, "Dealer Busts");
+                            bet = 0;
+                            repaint();
+                            int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                            if (reply == JOptionPane.YES_OPTION) {
+                                reset();
+                            }
+                            done = true;
+                        } else if (dealer.getValue() == 21) {
+                            JOptionPane.showMessageDialog(null, "Dealer wins");
+                            bet = 0;
+                            repaint();
+                            done = true;
+                        }
+                    }
+                    if (player.getValue() > dealer.getValue() && !done) {
+                        money = money + (2*bet);
+                        bet = 0;
+                        JOptionPane.showMessageDialog(null, "Player wins");
+                        repaint();
+                        int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            reset();
+                        }
+                    } else if (player.getValue() > dealer.getValue() && !done) {
+                        JOptionPane.showMessageDialog(null, "Dealer wins");
+                        bet = 0;
+                        repaint();
+                        int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            reset();
+                        }
+                    } else if (player.getValue() == dealer.getValue() && !done) {
+                        dealer.hit();
+                        repaint();
+                        if (dealer.getValue() > 21) {
+                            money = money + (2*bet);
+                            bet = 0;
+                            JOptionPane.showMessageDialog(null, "Dealer Busts");
+                            repaint();
+                            int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                            if (reply == JOptionPane.YES_OPTION) {
+                                reset();
+                            }
+                        } else {
+                            money = money + (2*bet);
+                            bet = 0;
+                            JOptionPane.showMessageDialog(null, "Player wins");
+                            repaint();
+                            int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                            if (reply == JOptionPane.YES_OPTION) {
+                                reset();
+                            }
+                        }
+                    }
+                } else if (x > 100 && x < 290 && y > 325 && y < 400 && begun == false) {
+                    bet = Integer.parseInt(JOptionPane.showInputDialog("How much would you like to bet?", bet));
+                    money = money - bet;
+                    player.hit();
+                    player.hit();
+                    dealer.hitDown();
+                    dealer.hit();
+                    repaint();
+                    begun = true;
+                    if (player.getValue() == 21) {
+                        money = money + (2*bet);
+                        bet = 0;
+                        JOptionPane.showMessageDialog(null, "Blackjack!");
+                        repaint();
+                        int reply = JOptionPane.showConfirmDialog(null, "Would you like to keep playing?", null, JOptionPane.YES_NO_OPTION);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            reset();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+        }
+    }
+    public void reset() {
+        player.clear();
+        dealer.clear();
+        deck.shuffleDeck();
+        repaint();
+        begun = false;
+    }
+}
